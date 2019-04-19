@@ -45,6 +45,12 @@ class Point(BasePoint):
 
     def __mul__(self, other: Union['Point', int]) -> 'Point':
         return self.mul(other)
+    
+    def abs(self) -> 'Point':
+        return Point(abs(self.x), abs(self.y))
+
+    def __abs__(self) -> 'Point':
+        return self.abs()
 
     def __eq__(self, other: Union['Point', int]) -> bool:
         return (self.x == other.x) and (self.y == other.y)

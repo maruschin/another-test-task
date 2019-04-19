@@ -53,3 +53,18 @@ def test_mul_operator():
     assert Point(1, 3) * Point(3, 1) == Point(1*3, 3*1)
     assert Point(1, 2) * 2 == Point(1*2, 2*2)
 
+
+def test_abs_function():
+    assert Point(1, 1) == abs(Point(-1, -1))
+
+
+def test_mean_point():
+    Ax, Ay = 1, 1
+    Bx, By = 7, 7
+    Cx = (Ax + Bx)/2 + abs(Ax - Bx)*0.25
+    Cy = (Ay + By)/2 + abs(Ay - By)*0.25
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C = Point(Cx, Cy)
+    assert (A + B)/2 + abs(A - B)*0.25 == C
+
