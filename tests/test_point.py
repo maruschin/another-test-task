@@ -33,3 +33,23 @@ def test_sub_operator():
     assert A - B == D
     assert A - 2 == F
 
+
+def test_div_function():
+    assert Point(1, 3).div(Point(3, 1)) == Point(1/3, 3/1)
+    assert Point(2, 1).div(2) == Point(2/2, 1/2)
+
+
+def test_div_operator():
+    assert Point(1, 3) / Point(3, 1) == Point(1/3, 3/1)
+    assert Point(1, 2) / 2 == Point(1/2, 2/2)
+
+
+def test_mul_function():
+    assert Point(1, 3).mul(Point(3, 1)) == Point(1*3, 3*1)
+    assert Point(2, 1).mul(2) == Point(2*2, 1*2)
+
+
+def test_mul_operator():
+    assert Point(1, 3) * Point(3, 1) == Point(1*3, 3*1)
+    assert Point(1, 2) * 2 == Point(1*2, 2*2)
+
