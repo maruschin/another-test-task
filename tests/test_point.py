@@ -1,6 +1,7 @@
 import pytest
 
 from main import Point
+from random import seed
 
 
 A, B = Point(1, 3), Point(3, 1)
@@ -58,13 +59,20 @@ def test_abs_function():
     assert Point(1, 1) == abs(Point(-1, -1))
 
 
+def test_random_point():
+    seed(1337)
+    assert Point.random(0.5) == Point(0.11775285695147064, 0.03326557360500082)
+
+
 def test_mean_point():
+    Rnd = Point.random(0.5)
+    Rndx, Rndy = Rnd.x, Rnd.y
     Ax, Ay = 1, 1
     Bx, By = 7, 7
-    Cx = (Ax + Bx)/2 + abs(Ax - Bx)*0.25
-    Cy = (Ay + By)/2 + abs(Ay - By)*0.25
+    Cx = (Ax + Bx)/2 + abs(Ax - Bx)*Rndx
+    Cy = (Ay + By)/2 + abs(Ay - By)*Rndy
     A = Point(Ax, Ay)
     B = Point(Bx, By)
     C = Point(Cx, Cy)
-    assert (A + B)/2 + abs(A - B)*0.25 == C
+    assert (A + B)/2 + Rnd*abs(A - B) == C
 

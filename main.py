@@ -1,5 +1,6 @@
 from collections import namedtuple
 from typing import Union
+from random import random
 
 
 w, h = 400, 600
@@ -10,6 +11,11 @@ BasePoint = namedtuple('Point', ('x', 'y'))
 
 
 class Point(BasePoint):
+    @staticmethod
+    def random(k: float):
+        rnd = lambda k: (random()*2 - 1)*k
+        return Point(rnd(k), rnd(k))
+
     def add(self, other: Union['Point', int]) -> 'Point':
         if isinstance(other, Point):
             return Point(self.x + other.x, self.y + other.y)
