@@ -9,12 +9,17 @@ k = 0.5
 
 BasePoint = namedtuple('Point', ('x', 'y'))
 class Point(BasePoint):
-    def add(self, other: 'Point'):
+    def add(self, other: 'Point') -> 'Point':
         return Point(self.x + other.x, self.y + other.y)
 
 
-    def sub(self, other: 'Point'):
+    def sub(self, other: 'Point') -> 'Point':
         return Point(self.x - other.x, self.y - other.y)
 
 
-print(Point(2,3).add(Point(2,3)).sub(Point(1.2, 3.4)))
+
+A, B = Point(2,3), Point(1,2)
+print('A = {}, B = {}'.format(A, B))
+print('test A.add(B):', A.add(B))
+print('test A.sub(B):', A.sub(B))
+
