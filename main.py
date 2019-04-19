@@ -13,13 +13,18 @@ class Point(BasePoint):
         return Point(self.x + other.x, self.y + other.y)
 
 
+    def __add__(self, other: 'Point') -> 'Point':
+        return self.add(other)
+
+
     def sub(self, other: 'Point') -> 'Point':
         return Point(self.x - other.x, self.y - other.y)
 
 
+    def __sub__(self, other: 'Point') -> 'Point':
+        return self.sub(other)
 
-A, B = Point(2,3), Point(1,2)
-print('A = {}, B = {}'.format(A, B))
-print('test A.add(B):', A.add(B))
-print('test A.sub(B):', A.sub(B))
+
+    def __eq__(self, other: 'Point') -> bool:
+        return (self.x == other.x) and (self.y == other.y)
 
