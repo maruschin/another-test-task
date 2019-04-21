@@ -2,7 +2,8 @@ from setuptools import setup
 
 setup(
     name='anothertt',
-    version='0.0.3',
+    python_requires='>3.6',
+    version='0.0.4',
     description='None',
     url='http://github.com/maruschin',
     author='Evgenii Marushchenko',
