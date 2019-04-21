@@ -59,6 +59,9 @@ class Point(NamedTuple):
     def __abs__(self) -> 'Point':
         return self.abs()
 
+    def __round__(self) -> 'Point':
+        return Point(round(self.x), round(self.y))
+
     def __eq__(self, other: Union['Point', int]) -> bool:
         return (self.x == other.x) and (self.y == other.y)
 

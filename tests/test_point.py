@@ -109,6 +109,12 @@ def test_abs_function():
     assert A == abs(B)
 
 
+def test_round_function():
+    A = Point(1.2, 2.3)
+    B = Point(1,2)
+    assert round(A) == B
+
+
 def test_random_point():
     seed(1337)
     A = Point.random(0.5)
