@@ -1,3 +1,4 @@
+import sys
 import logging
 import functools
 
@@ -81,24 +82,35 @@ class Point(NamedTuple):
 
 
 class Triangle(NamedTuple):
+    """
+    Triangle class that implements the necessary functions for splitting and drawing.
+    """
     A: Point
     B: Point
     C: Point
 
     def get_sides(self):
+        """Returns the points of the sides of a triangle"""
         points = [self.A, self.B, self.C]
         return combinations(points, 2)
 
     def __round__(self):
+        """Returns Triangle with rounded points."""
         return Triangle(round(self.A), round(self.B), round(self.C))
 
     def mutate(self, k: int):
+        """Returns splitting a triangle into new three triangles."""
         AB, AC, BC = [A.mean_point(B, k) for A, B in self.get_sides()]
         return [
             Triangle(self.A, AB, AC),
             Triangle(self.B, BC, AB),
             Triangle(self.C, AC, BC),
             ]
+
+
+class MutateFigureError(AttributeError):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
 
 
 class Figure():
@@ -109,7 +121,8 @@ class Figure():
         self.n = n
         self.out = out
 
-    def init(self) -> 'Triangle':
+    def init(self):
+        """Method to create the first shape."""
         A = Point(self.width/2, 0)
         B = Point(0, self.height)
         C = Point(self.width, self.height)
@@ -118,10 +131,17 @@ class Figure():
         logging.info("First triangle: {}".format(triangle))
 
     def mutate(self):
+        """The method of transforming the shape of a given algorithm."""
         logging.info("Mutate figure:")
-        triangles = self.triangles
+        try:
+            triangles = self.triangles
+        except AttributeError as e:
+            logging.fatal(
+                "You must initialize the object before mutation",
+                exc_info=True)
+            sys.exit(1)
         for i in range(self.n):
-            logging.info("  - Mutation step {}".format(i))
+            logging.info("  - Mutation step {}".format(i+1))
             triangles = [
                 tri for triangle in triangles
                     for tri in triangle.mutate(self.k)
@@ -130,11 +150,21 @@ class Figure():
         self.triangles = triangles
     
     def draw(self):
+        """Method fo drawing shapes on canvas."""
         logging.info("Draw figure:")
         black = (0, 0, 0, 255)
         white = (255, 255, 255, 255)
         canvas = Image.new('RGBA', (self.width, self.height), white)
         draw = ImageDraw.Draw(canvas)
+        try:
+            triangles = self.triangles
+        except AttributeError as e:
+            logging.fatal(
+                "You must initialize the object before mutation and draw",
+                exc_info=True)
+            sys.exit(1)
+        if len(triangles) == 1:
+            raise MutateFigureError('You must mutate figure before drawing.')
         for i, triangle in enumerate(self.triangles):
             for side in triangle.get_sides():
                 draw.line(side, fill=black, width=1)
@@ -144,6 +174,13 @@ class Figure():
         self.canvas = canvas
 
     def save(self):
+        try:
+            canvas = self.canvas
+        except AttributeError as e:
+            logging.fatal(
+                "You must draw figure before save",
+                exc_info=True)
+            sys.exit(1)
         logging.info("Saving figure to {}".format(self.out))
         self.canvas.save(self.out)
         
@@ -213,6 +250,6 @@ if __name__ == '__main__':
     )
     fig.init()
     fig.mutate()
-    fig.draw()
+    #fig.draw()
     fig.save()
 
