@@ -9,61 +9,74 @@ from argparse import ArgumentParser, ArgumentTypeError
 
 
 class Point(NamedTuple):
+    """
+    Point class with support for basic arithmetic operations and
+    function for middle point.
+    """
     x: Union[int, float]
     y: Union[int, float]
 
     @staticmethod
     def random():
+        """Static method returns a random Point in the range from -1 to 1."""
         def rnd():
             return (random()*2 - 1)
         return Point(rnd(), rnd())
 
     def add(self, other: Union['Point', int]) -> 'Point':
+        """Returns the elementwise sum of two points."""
         if isinstance(other, Point):
             return Point(self.x + other.x, self.y + other.y)
         else:
             return Point(self.x + other, self.y + other)
 
     def __add__(self, other: Union['Point', int]) -> 'Point':
+        """Add sum operator (+) for elementwise sum of two points."""
         return self.add(other)
 
     def sub(self, other: Union['Point', int]) -> 'Point':
+        """Returns the elementwise difference of two points."""
         if isinstance(other, Point):
             return Point(self.x - other.x, self.y - other.y)
         else:
             return Point(self.x - other, self.y - other)
 
     def __sub__(self, other: Union['Point', int]) -> 'Point':
+        """Add operator (-) for elementwise difference of two points."""
         return self.sub(other)
 
     def div(self, other: Union['Point', int]) -> 'Point':
+        """Returns the elementwise division of two points."""
         if isinstance(other, Point):
             return Point(self.x / other.x, self.y / other.y)
         else:
             return Point(self.x / other, self.y / other)
 
     def __truediv__(self, other: Union['Point', int]) -> 'Point':
+        """Add operator (/) for elementwise division of two points."""
         return self.div(other)
 
     def mul(self, other: Union['Point', int]) -> 'Point':
+        """Returns of elementwise multiplication of two points."""
         if isinstance(other, Point):
             return Point(self.x * other.x, self.y * other.y)
         else:
             return Point(self.x * other, self.y * other)
 
     def __mul__(self, other: Union['Point', int]) -> 'Point':
+        """Add operator (*) for elementwise multiplication of two points."""
         return self.mul(other)
 
-    def abs(self) -> 'Point':
+    def __abs__(self) -> 'Point':
+        """Return the absolute value of a point."""
         return Point(abs(self.x), abs(self.y))
 
-    def __abs__(self) -> 'Point':
-        return self.abs()
-
     def __round__(self) -> 'Point':
+        """Returns point with rounded coordinates."""
         return Point(round(self.x), round(self.y))
 
     def mean_point(self, other: 'Point', k: float) -> 'Point':
+        """Returns the midpoint given the randomness coefficient."""
         return round((self + other)/2 + Point.random()*k*abs(self - other))
 
 
