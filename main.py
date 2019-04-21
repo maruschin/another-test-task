@@ -1,6 +1,9 @@
+import os
 import sys
 import logging
 import functools
+import datetime
+import uuid
 
 from typing import Union, NamedTuple
 from random import random
@@ -174,6 +177,9 @@ class Figure():
         self.canvas = canvas
 
     def save(self):
+        log_img_name = "log/img/{}-fig{}.png".format(
+            datetime.datetime.now(),
+            uuid.uuid4())
         try:
             canvas = self.canvas
         except AttributeError as e:
@@ -183,6 +189,8 @@ class Figure():
             sys.exit(1)
         logging.info("Saving figure to {}".format(self.out))
         self.canvas.save(self.out)
+        logging.info("Saving log to {}".format(log_img_name))
+        self.canvas.save(log_img_name)
         
 
 
@@ -221,9 +229,14 @@ def valid_dimension(string):
 
 if __name__ == '__main__':
     FORMAT = '%(asctime)-15s [%(levelname)s] %(message)s'
-    FILENAME = "example.log"
+    FILENAME = "log/example.log"
+    try:
+        os.makedirs('log')
+        os.makedirs('log/img')
+    except FileExistsError:
+        pass
     logging.basicConfig(filename=FILENAME, format=FORMAT, level=logging.DEBUG)
-    parser = ArgumentParser(description='Формирования разбиения фигуры')
+    parser = ArgumentParser(description='Triangular application.')
     parser.add_argument('-W', '--width', default=400,
         type=valid_dimension,
         help='figure width')
@@ -250,6 +263,6 @@ if __name__ == '__main__':
     )
     fig.init()
     fig.mutate()
-    #fig.draw()
+    fig.draw()
     fig.save()
 
