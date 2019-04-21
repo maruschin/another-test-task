@@ -8,7 +8,7 @@ setup(
     author='Evgenii Marushchenko',
     author_email='maruschin@gmail.com',
     license='Unlicense',
-    packages=['anothertt'],
+    packages=['app'],
     zip_safe=False,
 )
 
