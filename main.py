@@ -13,7 +13,8 @@ class Point(NamedTuple):
 
     @staticmethod
     def random(k: float):
-        def rnd(k): (random()*2 - 1)*k
+        def rnd(k):
+            return (random()*2 - 1)*k
         return Point(rnd(k), rnd(k))
 
     def add(self, other: Union['Point', int]) -> 'Point':

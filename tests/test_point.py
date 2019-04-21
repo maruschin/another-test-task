@@ -16,52 +16,104 @@ E, F = Point(3, 5), Point(-1, 1)
 
 
 def test_add_function():
-    assert A.add(B) == C
-    assert A.add(2) == E
-
-
-def test_sub_function():
-    assert A.sub(B) == D
-    assert A.sub(2) == F
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax + Bx, Ay + By)
+    C2 = Point(Ax + 2, Ay + 2)
+    assert A.add(B) == C1
+    assert A.add(2) == C2
 
 
 def test_add_operator():
-    assert A + B == C
-    assert A + 2 == E
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax + Bx, Ay + By)
+    C2 = Point(Ax + 2, Ay + 2)
+    assert A + B == C1
+    assert A + 2 == C2
+
+
+def test_sub_function():
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax - Bx, Ay - By)
+    C2 = Point(Ax - 2, Ay - 2)
+    assert A.sub(B) == C1
+    assert A.sub(2) == C2
 
 
 def test_sub_operator():
-    assert A - B == D
-    assert A - 2 == F
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax - Bx, Ay - By)
+    C2 = Point(Ax - 2, Ay - 2)
+    assert A - B == C1
+    assert A - 2 == C2
 
 
 def test_div_function():
-    assert Point(1, 3).div(Point(3, 1)) == Point(1/3, 3/1)
-    assert Point(2, 1).div(2) == Point(2/2, 1/2)
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax / Bx, Ay / By)
+    C2 = Point(Ax / 2, Ay / 2)
+    assert A.div(B) == C1
+    assert A.div(2) == C2
 
 
 def test_div_operator():
-    assert Point(1, 3) / Point(3, 1) == Point(1/3, 3/1)
-    assert Point(1, 2) / 2 == Point(1/2, 2/2)
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax / Bx, Ay / By)
+    C2 = Point(Ax / 2, Ay / 2)
+    assert A / B == C1
+    assert A / 2 == C2
 
 
 def test_mul_function():
-    assert Point(1, 3).mul(Point(3, 1)) == Point(1*3, 3*1)
-    assert Point(2, 1).mul(2) == Point(2*2, 1*2)
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax * Bx, Ay * By)
+    C2 = Point(Ax * 2, Ay * 2)
+    assert A.mul(B) == C1
+    assert A.mul(2) == C2
 
 
 def test_mul_operator():
-    assert Point(1, 3) * Point(3, 1) == Point(1*3, 3*1)
-    assert Point(1, 2) * 2 == Point(1*2, 2*2)
+    Ax, Ay = 1, 3
+    Bx, By = 4, 5
+    A = Point(Ax, Ay)
+    B = Point(Bx, By)
+    C1 = Point(Ax * Bx, Ay * By)
+    C2 = Point(Ax * 2, Ay * 2)
+    assert A * B == C1
+    assert A * 2 == C2
 
 
 def test_abs_function():
-    assert Point(1, 1) == abs(Point(-1, -1))
+    A = Point(1, 2)
+    B = A * -1
+    assert A == abs(B)
 
 
 def test_random_point():
     seed(1337)
-    assert Point.random(0.5) == Point(0.11775285695147064, 0.03326557360500082)
+    A = Point.random(0.5)
+    B = Point(0.11775285695147064, 0.03326557360500082)
+    assert A == B
 
 
 def test_mean_point():
