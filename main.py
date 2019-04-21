@@ -62,9 +62,6 @@ class Point(NamedTuple):
     def __round__(self) -> 'Point':
         return Point(round(self.x), round(self.y))
 
-    def __eq__(self, other: Union['Point', int]) -> bool:
-        return (self.x == other.x) and (self.y == other.y)
-
 
 class Triangle(NamedTuple):
     A: Point
@@ -73,6 +70,9 @@ class Triangle(NamedTuple):
 
     def _get_points(self):
         return [self.A, self.B, self.C]
+
+    def __round__(self):
+        return Triangle(round(self.A), round(self.B), round(self.C))
 
     @staticmethod
     def _get_random_mean_point(A: Point, B: Point, k: int) -> Point:
