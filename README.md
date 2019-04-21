@@ -4,16 +4,16 @@
 ### Installation
 
 ```
-pip install https://github.com/maruschin/another-test-task
+pip install https://github.com/maruschin/another-test-task.git
 ```
 
 ### Command to show all arguments
 ```
-$ python main.py -h
+$ python -m anothertt -h
 ```
 
 ```
-usage: main.py [-h] [-W WIDTH] [-H HEIGHT] [-K CURVATURE] [-N ITERATIONS]
+usage: anotherttt [-h] [-W WIDTH] [-H HEIGHT] [-K CURVATURE] [-N ITERATIONS]
                [--out OUT]
 
 Triangular application.
@@ -34,6 +34,7 @@ optional arguments:
 
 ### Examples
 ```
-python main.py -W 300 -H 200 -N 5 -K 0.1 --out fig.png
+python -m anothertt -W 300 -H 200 -N 5 -K 0.1 --out fig.png
 ```
+A folder with logs and a file with an image will be created in the running directory.
 

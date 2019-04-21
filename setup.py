@@ -9,7 +9,9 @@ setup(
     author_email='maruschin@gmail.com',
     license='Unlicense',
     packages=['anothertt'],
-    libraries=['pillow'],
+    install_requires=[
+        'pillow',
+    ],
     zip_safe=False,
 )
 
