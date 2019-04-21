@@ -1,7 +1,19 @@
+import logging
+import functools
+
 from typing import Union, NamedTuple
 from random import random
 from itertools import combinations
-from PIL import Image, Image
+from PIL import Image, ImageDraw
+from argparse import ArgumentParser, ArgumentTypeError
+
+
+def func_logging(func):
+    @functools.wraps(func)
+    def func_log(*args, **kwargs):
+        logging.info("Run function: {0}{1})".format(func.__name__))
+        return func(*args, **kwargs)
+    return func_log
 
 
 class Point(NamedTuple):
@@ -79,10 +91,7 @@ class Triangle(NamedTuple):
         return round((A + B)/2 + Point.random()*k*abs(A - B))
 
     def mutate(self, k: int):
-        AB, AC, BC = [
-            self.mean_point(A, B, k) for A, B
-            in self.get_sides()
-            ]
+        AB, AC, BC = [self.mean_point(A, B, k) for A, B in self.get_sides()]
         return [
             Triangle(self.A, AB, AC),
             Triangle(self.B, BC, AB),
@@ -90,24 +99,97 @@ class Triangle(NamedTuple):
             ]
 
 
-def get_init_triangle(w: int, h: int) -> Triangle:
-    A = Point(w/2, 0)
-    B = Point(0, h)
-    C = Point(w, h)
-    return round(Triangle(A, B, C))
+class Figure():
+    def __init__(self, width: int, height: int, k: float):
+        self.width = width
+        self.height = height
+        self.k = k
+
+    def init(self) -> 'Triangle':
+        A = Point(self.width/2, 0)
+        B = Point(0, self.height)
+        C = Point(self.width, self.height)
+        self.triangles = [round(Triangle(A, B, C))]
+
+    def mutate(self, n: int):
+        triangles = self.triangles
+        for i in range(n):
+            triangles = [
+                tri for triangle in triangles
+                    for tri in triangle.mutate(self.k)
+                ]
+        self.triangles = triangles
+
+    def draw(self):
+        black = (0, 0, 0, 255)
+        white = (255, 255, 255, 255)
+        canvas = Image.new('RGBA', (self.width, self.height), white)
+        draw = ImageDraw.Draw(canvas)
+        for triangle in self.triangles:
+            for side in triangle.get_sides():
+                draw.line(side, fill=black, width=1)
+        return canvas
 
 
-def draw(tri: Triangle):
-    black = (0, 0, 0, 255)
-    white = (255, 255, 255, 255)
-    canvas = Image.new('RGBA', (1000, 1000), white)
-    draw = ImageDraw.Draw(canvas)
+def valid_iterations(string):
+    msg = 'The number of iterations must be an integer greater than zero'
+    try:
+        value = int(string)
+    except:
+        raise ArgumentTypeError(msg)
+    if value <= 0:
+        raise ArgumentTypeError(msg)
+    return value
+
+
+def valid_curvature(string):
+    msg = 'The curvature coefficient must be a float between 0 and 1'
+    try:
+        value = float(string)
+    except:
+        raise ArgumentTypeError(msg)
+    if not 0 <= value <= 1:
+        raise ArgumentTypeError(msg)
+    return value
+
+
+def valid_dimension(string):
+    msg = 'Width or height must be an integer greater than zero'
+    try:
+        value = int(string)
+    except:
+        raise ArgumentTypeError(msg)
+    if value <= 0:
+        raise ArgumentTypeError(msg)
+    return value
 
 
 if __name__ == '__main__':
-    w, h = 400, 600
-    k = 0.5
-    tri = get_init_triangle(400, 600)
-    print(tri)
-    print([round(fig) for fig in tri.mutate(0.2)])
+    FORMAT = '%(asctime-15s [%(levelname)s] %(message)s'
+    FILENAME = "example.log"
+    logging.basicConfig(filename=FILENAME, format=FORMAT, level=logging.DEBUG)
+    parser = ArgumentParser(description='Формирования разбиения фигуры')
+    parser.add_argument('-W', '--width', default=400,
+        type=valid_dimension,
+        help='figure width')
+    parser.add_argument('-H', '--height', default=600,
+        type=valid_dimension,
+        help='figure height')
+    parser.add_argument('-K', '--curvature', default=0,
+        type=valid_curvature,
+        help='curvature coefficient')
+    parser.add_argument('-N', '--iterations', default=1,
+        type=valid_iterations,
+        help='number of iterations')
+    args = parser.parse_args()
+    print(args)
+    fig = Figure(
+        width=args.width,
+        height=args.height,
+        k=args.curvature,
+    )
+    fig.init()
+    fig.mutate(args.iterations)
+    canvas = fig.draw()
+    canvas.save('fig.png')
 
