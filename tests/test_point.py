@@ -111,19 +111,19 @@ def test_abs_function():
 
 def test_round_function():
     A = Point(1.2, 2.3)
-    B = Point(1,2)
+    B = Point(1, 2)
     assert round(A) == B
 
 
 def test_random_point():
     seed(1337)
-    A = Point.random(0.5)
+    A = Point.random()*0.5
     B = Point(0.11775285695147064, 0.03326557360500082)
     assert A == B
 
 
 def test_mean_point():
-    Rnd = Point.random(0.5)
+    Rnd = Point.random()*0.5
     Rndx, Rndy = Rnd.x, Rnd.y
     Ax, Ay = 1, 1
     Bx, By = 7, 7

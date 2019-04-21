@@ -1,10 +1,7 @@
 from typing import Union, NamedTuple
 from random import random
 from itertools import combinations
-
-
-w, h = 400, 600
-k = 0.5
+from PIL import Image, Image
 
 
 class Point(NamedTuple):
@@ -12,10 +9,10 @@ class Point(NamedTuple):
     y: Union[int, float]
 
     @staticmethod
-    def random(k: float):
-        def rnd(k):
-            return (random()*2 - 1)*k
-        return Point(rnd(k), rnd(k))
+    def random():
+        def rnd():
+            return (random()*2 - 1)
+        return Point(rnd(), rnd())
 
     def add(self, other: Union['Point', int]) -> 'Point':
         if isinstance(other, Point):
@@ -71,17 +68,20 @@ class Triangle(NamedTuple):
     def _get_points(self):
         return [self.A, self.B, self.C]
 
+    def get_sides(self):
+        return combinations(self._get_points(), 2)
+
     def __round__(self):
         return Triangle(round(self.A), round(self.B), round(self.C))
 
     @staticmethod
-    def _get_random_mean_point(A: Point, B: Point, k: int) -> Point:
-        return (A + B)/2 + Point.random(k)*abs(A - B)
+    def mean_point(A: Point, B: Point, k: int) -> Point:
+        return round((A + B)/2 + Point.random()*k*abs(A - B))
 
     def mutate(self, k: int):
         AB, AC, BC = [
-            self._get_random_mean_point(A, B, k) for A, B
-            in combinations(self._get_points(), 2)
+            self.mean_point(A, B, k) for A, B
+            in self.get_sides()
             ]
         return [
             Triangle(self.A, AB, AC),
@@ -94,11 +94,20 @@ def get_init_triangle(w: int, h: int) -> Triangle:
     A = Point(w/2, 0)
     B = Point(0, h)
     C = Point(w, h)
-    return Triangle(A, B, C)
+    return round(Triangle(A, B, C))
+
+
+def draw(tri: Triangle):
+    black = (0, 0, 0, 255)
+    white = (255, 255, 255, 255)
+    canvas = Image.new('RGBA', (1000, 1000), white)
+    draw = ImageDraw.Draw(canvas)
 
 
 if __name__ == '__main__':
+    w, h = 400, 600
+    k = 0.5
     tri = get_init_triangle(400, 600)
     print(tri)
-    print(tri.mutate(0.2))
+    print([round(fig) for fig in tri.mutate(0.2)])
 
