@@ -4,7 +4,7 @@
 ### Installation
 
 ```
-pip install https://github.com/maruschin/another-test-task.git
+pip install git+https://github.com/maruschin/another-test-task.git
 ```
 
 ### Command to show all arguments
