@@ -1,6 +1,6 @@
 import pytest
 
-from main import Point
+from anothertt import Point
 from random import seed
 
 

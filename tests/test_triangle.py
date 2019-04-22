@@ -1,6 +1,6 @@
 import pytest
 
-from main import Point, Triangle
+from anothertt import Point, Triangle
 
 
 def test_round_method():
